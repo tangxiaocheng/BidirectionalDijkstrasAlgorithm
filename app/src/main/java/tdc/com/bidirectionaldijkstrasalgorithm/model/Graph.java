@@ -4,16 +4,26 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 class Graph {
-  Map<String, List<Edge>> graphMap;
 
-  public Graph(int n) {
+  private Map<String, List<Edge>> graphMap;
+
+  Graph() {
+    graphMap = new HashMap<>();
+  }
+
+  Graph(int n) {
     graphMap = new HashMap<>(n);
   }
 
-  public Graph() {
-    graphMap = new HashMap<>();
+  List<Edge> getEdges(String node) {
+    return graphMap.get(node);
+  }
+
+  void addDirectedEdge(String from, String to, double distance) {
+    graphMap.computeIfAbsent(from, x -> new LinkedList<>()).add(new Edge(to, distance));
   }
 
   void addUndirectedEdge(String from, String to, double distance) {
@@ -21,26 +31,23 @@ class Graph {
     addDirectedEdge(to, from, distance);
   }
 
-  void addDirectedEdge(String from, String to, double distance) {
-    graphMap.computeIfAbsent(from, x -> new LinkedList<>()).add(new Edge(to, distance));
-  }
-
-  public List<Edge> getEdgeList(String node) {
-    return graphMap.get(node);
+  public Graph reverseGraph() {
+    Graph reverseGraph = new Graph(graphMap.size());
+    for (String from : graphMap.keySet()) {
+      for (Edge edge : graphMap.get(from)) {
+        reverseGraph.addDirectedEdge(edge.to, from, edge.distance);
+      }
+    }
+    return reverseGraph;
   }
 
   public int size() {
     return graphMap.size();
   }
 
-  public Graph reverseGraph() {
-    Graph reverseGraph = new Graph(size());
-    for (String from : graphMap.keySet()) {
-      for (Edge edge : graphMap.get(from)) {
-        String to = edge.to;
-        reverseGraph.addDirectedEdge(to, from, edge.distance);
-      }
-    }
-    return reverseGraph;
+  public Set<String> getNodeSet() {
+    return graphMap.keySet();
   }
+
+
 }
