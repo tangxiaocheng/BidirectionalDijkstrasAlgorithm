@@ -3,7 +3,7 @@ package tdc.com.bidirectionaldijkstrasalgorithm.model;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
-
+// rewrite in kotlin
 class BidirectionalDijkstrasAlgorithm {
 
   private Graph reverseGraph;
